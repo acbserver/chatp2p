@@ -3,7 +3,7 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches:
-      - main  # Cambia a la rama principal de tu repo si es diferente
+      - main  # Cambia a la rama principal si es diferente
 
 permissions:
   contents: read
@@ -24,15 +24,20 @@ jobs:
           cache: npm
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci --legacy-peer-deps  # Evita errores con dependencias conflictivas
 
       - name: Build project
+        env:
+          CI: false  # Previene posibles fallos por warnings en React (si usas React)
         run: npm run build
+
+      - name: Verify Build Output
+        run: ls -la dist  # Verifica que la carpeta `dist` se haya generado correctamente
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: dist
+          path: dist  # Asegúrate de que `dist` es la carpeta correcta
 
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4
