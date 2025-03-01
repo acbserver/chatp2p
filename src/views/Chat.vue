@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount, computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import Peer from 'peerjs'
+import { Peer } from 'peerjs';
 
 interface Message {
   id: string;
